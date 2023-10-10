@@ -4,21 +4,23 @@ using UnityEngine;
 
 public class EnemyManager : MonoBehaviour
 {
-    // Start is called before the first frame update
+    public float moveSpeed = 10f;
+    private GameObject player;
     void Start()
     {
-        
+        player = PlayerManager.Instance.player;    
     }
-
-    // Update is called once per frame
     void Update()
     {
-        
+        Vector3 direction = player.transform.position - transform.position;
+        direction.Normalize();
+        transform.Translate(direction * moveSpeed * Time.deltaTime);           
     }
 
     private void OnTriggerEnter2D(Collider2D other){
-        print(other.gameObject.name);
-        Destroy(other.gameObject);
+        if(other.CompareTag("Projectile")){
+            Destroy(other.gameObject);
+        }
         Destroy(gameObject);
     }
 }

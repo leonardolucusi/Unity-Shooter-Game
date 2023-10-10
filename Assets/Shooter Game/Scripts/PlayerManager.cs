@@ -2,24 +2,54 @@ using System.Collections;
 using UnityEngine;
 public class PlayerManager : MonoBehaviour
 {
+    [SerializeField]
+    public GameObject player;
     public GameObject projectilePrefab;
     public float projectileSpeed = 10f;
     public float shootDelay = 0.1f;
     private float moveHorizontal;
     private float moveVertical;
-    private float moveSpeed = 10f;
+    public float moveSpeed = 10f;
     private Rigidbody2D rb2D;
     private LineRenderer lineRenderer;
     private bool shooted = false;
     public float maxDistance;
     public bool activateDebugDrawLine = true;
+    private static PlayerManager instance;
+    public static PlayerManager Instance
+    {
+        get
+        {
+            if (instance == null)
+            {
+                instance = FindObjectOfType<PlayerManager>();
+                if (instance == null)
+                {
+                    GameObject go = new GameObject("PlayerManager");
+                    instance = go.AddComponent<PlayerManager>();
+                }
+            }
+            return instance;
+        }
+    }
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
     void Start()
     {
         rb2D = gameObject.GetComponent<Rigidbody2D>();
         lineRenderer = GetComponent<LineRenderer>();
         lineRenderer.positionCount = 2;
     }
-
     void Update()
     {
         moveHorizontal = Input.GetAxisRaw("Horizontal");
@@ -65,7 +95,6 @@ public class PlayerManager : MonoBehaviour
             lineRenderer.positionCount = 0;
         }
     }
-
     IEnumerator DelayShots(Vector2 direction){
         FireProjectile(direction);
         yield return new WaitForSeconds(shootDelay);
