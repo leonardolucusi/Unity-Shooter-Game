@@ -1,26 +1,45 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-
 public class EnemyManager : MonoBehaviour
 {
     public float moveSpeed = 10f;
     private GameObject player;
+    public float hp = 2f;
+    SpriteRenderer sr;
     void Start()
     {
-        player = PlayerManager.Instance.player;    
+        sr = GetComponent<SpriteRenderer>();
+        player = PlayerManager.Instance.player;
     }
     void Update()
     {
         Vector3 direction = player.transform.position - transform.position;
         direction.Normalize();
-        transform.Translate(direction * moveSpeed * Time.deltaTime);           
+        transform.position = Vector3.MoveTowards(transform.position, player.transform.position, moveSpeed * Time.deltaTime);
+        // transform.Translate(direction * moveSpeed * Time.deltaTime);           
     }
-
     private void OnTriggerEnter2D(Collider2D other){
-        if(other.CompareTag("Projectile")){
-            Destroy(other.gameObject);
+        if(other.gameObject.CompareTag(TagUtils.TAG_PROJECTILE)){
+            StartCoroutine(ChangeColorOnHitDuration(0.5f));
+            ReceiveDamage(1f);
         }
-        Destroy(gameObject);
+    }
+    public void ReceiveDamage(float damage){        
+        hp -= damage;
+        print(hp);
+        CheckIfCanBeKilled(hp);
+    }
+    public void CheckIfCanBeKilled(float hp){
+        if(hp <= 0 ){
+            Destroy(gameObject);
+        }
+    }
+    IEnumerator ChangeColorOnHitDuration(float duration){
+        sr.color = Color.red;
+        yield return new WaitForSeconds(duration);
+        sr.color = Color.green;
+    }
+    IEnumerator DelayBetweenHit(){
+        yield return null;
     }
 }
