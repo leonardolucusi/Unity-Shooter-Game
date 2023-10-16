@@ -2,41 +2,25 @@ using System.Collections;
 using UnityEngine;
 public class PlayerManager : MonoBehaviour
 {
+    // SINGLETON
+    public static PlayerManager Instance{get; private set; }
+    // SINGLETON end
     [SerializeField]
     public GameObject player;
     public GameObject projectilePrefab;
-    public float projectileSpeed = 10f;
-    public float shootDelay = 0.1f;
     private float moveHorizontal;
     private float moveVertical;
-    public float moveSpeed = 10f;
+    public float  moveSpeed = 10f;
     private Rigidbody2D rb2D;
     private LineRenderer lineRenderer;
     private bool shooted = false;
     public float maxDistance;
-    public bool activateDebugDrawLine = true;
-    private static PlayerManager instance;
-    public static PlayerManager Instance
-    {
-        get
-        {
-            if (instance == null)
-            {
-                instance = FindObjectOfType<PlayerManager>();
-                if (instance == null)
-                {
-                    GameObject go = new GameObject("PlayerManager");
-                    instance = go.AddComponent<PlayerManager>();
-                }
-            }
-            return instance;
-        }
-    }
+    // public bool activateDebugDrawLine = true;
     private void Awake()
     {
-        if (instance == null)
+        if (Instance == null)
         {
-            instance = this;
+            Instance = this;
             DontDestroyOnLoad(gameObject);
         }
         else
@@ -49,6 +33,7 @@ public class PlayerManager : MonoBehaviour
         rb2D = gameObject.GetComponent<Rigidbody2D>();
         lineRenderer = GetComponent<LineRenderer>();
         lineRenderer.positionCount = 2;
+        
     }
     void Update()
     {
@@ -62,9 +47,9 @@ public class PlayerManager : MonoBehaviour
         transform.rotation = Quaternion.Euler(0, 0, angle);
 
         if (Input.GetMouseButton(0) && !shooted)
-        {   
+        {
             shooted = true;
-            StartCoroutine(DelayShots(direction));
+            StartCoroutine(FireRate(direction));
         }
 
         if (Input.GetMouseButton(1))
@@ -72,12 +57,14 @@ public class PlayerManager : MonoBehaviour
             Vector3 mouseDirection =  Camera.main.ScreenToWorldPoint(Input.mousePosition);
             mouseDirection.z = 0f;
             Vector3 mouseDir = mouseDirection - transform.position;
+            mouseDir.z = 0f;
             LayerMask playerLayerMask = LayerMask.GetMask("Player");
             RaycastHit2D hit = Physics2D.Raycast(transform.position, mouseDir.normalized * maxDistance, maxDistance, ~playerLayerMask);
 
-            if(activateDebugDrawLine){
-                Debug.DrawLine(transform.position, hit.point, Color.red, 0.5f);
-            }
+            // DEBUG RAY
+            // if(activateDebugDrawLine){
+            //     Debug.DrawLine(transform.position, hit.point, Color.red, 0.5f);
+            // }
 
             if (hit.collider != null)
             {
@@ -95,38 +82,20 @@ public class PlayerManager : MonoBehaviour
             lineRenderer.positionCount = 0;
         }
     }
-    IEnumerator DelayShots(Vector2 direction){
+    IEnumerator FireRate(Vector2 direction){
         FireProjectile(direction);
-        yield return new WaitForSeconds(shootDelay);
+        yield return new WaitForSeconds(projectilePrefab.GetComponent<Projectile>().fireRate);
         shooted = false;
     }
     void FixedUpdate()
     {
         Vector2 direction = new Vector2(moveHorizontal, moveVertical).normalized;
         Vector2 newPosition = (Vector2)transform.position + direction * moveSpeed * Time.deltaTime;
-        rb2D.MovePosition(newPosition); 
+        rb2D.MovePosition(newPosition);
     }
-    void FireProjectile(Vector2 direction)
+    public void FireProjectile(Vector2 direction)
     {
         GameObject projectile = Instantiate(projectilePrefab, transform.position, Quaternion.identity);
-        Rigidbody2D projectileRigidbody = projectile.GetComponent<Rigidbody2D>();
-
-        // Rotaciona o projetil para direcao do mouse
-        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-        projectile.transform.rotation = Quaternion.Euler(0, 0, angle);
-
-        // projectile.GetComponent<Projectile>().shootDirection = direction;
-
-        if (projectileRigidbody != null)
-        {
-            projectileRigidbody.velocity = direction.normalized * projectileSpeed;
-        }
-        else
-        {
-            Debug.LogError("O projetil não possui um Rigidbody2D.");
-        }
-    }
-    public void IncreaseProjectileSpeed(float num){
-        projectileSpeed += num;
+        projectile.GetComponent<Projectile>().direction = direction;
     }
 }

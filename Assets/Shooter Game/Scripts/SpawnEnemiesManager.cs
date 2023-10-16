@@ -9,7 +9,7 @@ public class SpawnEnemiesManager : MonoBehaviour
     void SpawnEnemies(){
         Vector3 playerPos = player.transform.position;
         bool a = true;
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < 3; i++)
         {
             if(a){
                 Instantiate(enemy, playerPos + new Vector3(i,6,1), quaternion.identity);

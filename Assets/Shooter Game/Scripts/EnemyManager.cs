@@ -1,11 +1,20 @@
+using System;
 using System.Collections;
 using UnityEngine;
 public class EnemyManager : MonoBehaviour
 {
+    // public event Action<Vector2> OnEnemyDeath2;
+    public event Action OnEnemyDeath;
     public float moveSpeed = 10f;
     private GameObject player;
-    public float hp = 2f;
+    public float hp = 3f;
     SpriteRenderer sr;
+    public float durationBetweenHitColorChange = 0.1f;
+    void Awake(){
+        // OnEnemyDeath2 += PlayerManager.Instance.FireProjectile;
+        OnEnemyDeath += ScoreManager.Instance.IncreaseScoreOnEnemyKill;   
+        OnEnemyDeath += ScoreManager.Instance.MyMethod;   
+    }
     void Start()
     {
         sr = GetComponent<SpriteRenderer>();
@@ -16,21 +25,20 @@ public class EnemyManager : MonoBehaviour
         Vector3 direction = player.transform.position - transform.position;
         direction.Normalize();
         transform.position = Vector3.MoveTowards(transform.position, player.transform.position, moveSpeed * Time.deltaTime);
-        // transform.Translate(direction * moveSpeed * Time.deltaTime);           
     }
     private void OnTriggerEnter2D(Collider2D other){
         if(other.gameObject.CompareTag(TagUtils.TAG_PROJECTILE)){
-            StartCoroutine(ChangeColorOnHitDuration(0.5f));
-            ReceiveDamage(1f);
+            StartCoroutine(ChangeColorOnHitDuration(durationBetweenHitColorChange));
+            ReceiveDamage(other.GetComponent<Projectile>().damage);
         }
     }
-    public void ReceiveDamage(float damage){        
+    public void ReceiveDamage(float damage){
         hp -= damage;
-        print(hp);
         CheckIfCanBeKilled(hp);
     }
     public void CheckIfCanBeKilled(float hp){
         if(hp <= 0 ){
+            OnEnemyDeath?.Invoke(); // Invoke() - Invoca o método ou construtor atual.
             Destroy(gameObject);
         }
     }
@@ -39,7 +47,7 @@ public class EnemyManager : MonoBehaviour
         yield return new WaitForSeconds(duration);
         sr.color = Color.green;
     }
-    IEnumerator DelayBetweenHit(){
-        yield return null;
+    private void OnDestroy(){
+        OnEnemyDeath -= ScoreManager.Instance.IncreaseScoreOnEnemyKill;
     }
 }

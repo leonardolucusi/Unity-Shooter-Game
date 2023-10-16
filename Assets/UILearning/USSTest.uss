@@ -1,0 +1,8 @@
+Button {
+    background-color: #3498db;
+    color: white;
+}
+Label {
+    font-size: 20px;
+    color: white;
+}
