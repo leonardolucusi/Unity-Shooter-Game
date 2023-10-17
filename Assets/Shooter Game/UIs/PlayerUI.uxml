@@ -1,6 +1,12 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <ui:VisualElement style="flex-grow: 1; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0; border-top-left-radius: 10px; border-top-right-radius: 10px; border-bottom-right-radius: 10px; border-bottom-left-radius: 10px; border-left-color: rgba(0, 0, 0, 0); border-right-color: rgba(0, 0, 0, 0); border-top-color: rgba(0, 0, 0, 0); border-bottom-color: rgba(0, 0, 0, 0);">
-        <ui:ProgressBar value="50" title="Shield" name="energyShield" style="color: rgb(48, 110, 209); font-size: 20px; -unity-font-style: bold; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; border-top-width: 10px; border-right-width: 10px; border-bottom-width: 10px; border-left-width: 10px; border-left-color: rgb(0, 0, 0); border-right-color: rgb(0, 0, 0); border-top-color: rgb(0, 0, 0); border-bottom-color: rgb(0, 0, 0);" />
-        <ui:Label tabindex="-1" text="Label" parse-escape-sequences="true" display-tooltip-when-elided="true" name="metalScrap" />
+    <ui:VisualElement style="flex-grow: 1;">
+        <ui:VisualElement style="flex-grow: 0;">
+            <ui:ProgressBar value="50" title="Shield" name="energyShield" style="color: rgb(48, 110, 209); font-size: 20px; -unity-font-style: bold; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px; border-left-color: rgb(0, 0, 0); border-right-color: rgb(0, 0, 0); border-top-color: rgb(0, 0, 0); border-bottom-color: rgb(0, 0, 0); flex-grow: 0;" />
+            <ui:VisualElement style="flex-grow: 1; flex-direction: row;">
+                <ui:Label tabindex="-1" text="Metal Scrap:" parse-escape-sequences="true" display-tooltip-when-elided="true" style="font-size: 30px;" />
+                <ui:Label tabindex="-1" text="text" parse-escape-sequences="true" display-tooltip-when-elided="true" name="metalScrapDisplay" style="flex-grow: 0; font-size: 30px;" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement name="VisualElement" style="flex-grow: 1;" />
     </ui:VisualElement>
 </ui:UXML>

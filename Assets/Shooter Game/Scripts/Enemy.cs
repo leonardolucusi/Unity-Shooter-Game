@@ -1,34 +1,40 @@
 using System;
 using System.Collections;
 using UnityEngine;
-public class EnemyManager : MonoBehaviour
+public class Enemy : MonoBehaviour
 {
     // public event Action<Vector2> OnEnemyDeath2;
     public event Action OnEnemyDeath;
-    public float moveSpeed = 10f;
+    public float hp;
     private GameObject player;
-    public float hp = 3f;
-    SpriteRenderer sr;
-    public float durationBetweenHitColorChange = 0.1f;
+    public EnemySO enemySO;
+    [SerializeField]
+    private SpriteRenderer myRenderer;
     void Awake(){
-        // OnEnemyDeath2 += PlayerManager.Instance.FireProjectile;
+        if(enemySO == null){
+            enemySO = ScriptableObject.CreateInstance<EnemySO>();
+            hp = enemySO.hp;
+        }
+
         OnEnemyDeath += ScoreManager.Instance.IncreaseScoreOnEnemyKill;   
     }
     void Start()
     {
-        sr = GetComponent<SpriteRenderer>();
+        myRenderer = gameObject.AddComponent<SpriteRenderer>();
+        myRenderer.sprite = enemySO.sprite;
+        myRenderer.color = Color.green;
         player = PlayerManager.Instance.gameObject;
     }
     void Update()
     {
         Vector3 direction = player.transform.position - transform.position;
         direction.Normalize();
-        transform.position = Vector3.MoveTowards(transform.position, player.transform.position, moveSpeed * Time.deltaTime);
+        transform.position = Vector3.MoveTowards(transform.position, player.transform.position, enemySO.moveSpeed * Time.deltaTime);
     }
     private void OnTriggerEnter2D(Collider2D other){
         if(other.gameObject.CompareTag(TagUtils.TAG_PROJECTILE)){
-            StartCoroutine(ChangeColorOnHitDuration(durationBetweenHitColorChange));
-            ReceiveDamage(other.GetComponent<Projectile>().damage);
+            StartCoroutine(ChangeColorOnHitDuration(enemySO.durationBetweenHitColorChange));
+            ReceiveDamage(other.GetComponent<Projectile>().projectileSO.damage);
         }
     }
     public void ReceiveDamage(float damage){
@@ -42,9 +48,9 @@ public class EnemyManager : MonoBehaviour
         }
     }
     IEnumerator ChangeColorOnHitDuration(float duration){
-        sr.color = Color.red;
+        myRenderer.color = Color.red;
         yield return new WaitForSeconds(duration);
-        sr.color = Color.green;
+        myRenderer.color = Color.green;
     }
     private void OnDestroy(){
         OnEnemyDeath -= ScoreManager.Instance.IncreaseScoreOnEnemyKill;

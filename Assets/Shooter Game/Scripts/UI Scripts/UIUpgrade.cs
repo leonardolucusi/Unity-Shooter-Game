@@ -2,17 +2,17 @@ using UnityEngine;
 using UnityEngine.UIElements;
 public class UIUpgrade : MonoBehaviour
 {
-    private GameObject projectile;
+    public GameObject projectile;
+    public ProjectileSO projectileSO;
     private Projectile projectileScript;
     private VisualElement root;
-    private bool isUiVisible = true;
     private bool isPaused = false;
     VisualElement upgradeTab;
     Button moreFireRateButton;
     Button lessFireRateButton;
+    Button moreSpeedButton;
     void Start()
     {
-        projectile = Projectile.Instace.gameObject;
         projectileScript = projectile.GetComponent<Projectile>();
         root = GetComponent<UIDocument>().rootVisualElement;
         
@@ -24,25 +24,14 @@ public class UIUpgrade : MonoBehaviour
         moreFireRateButton.clicked += () => MoreFireRate();
         lessFireRateButton.clicked += () => LessFireRate();
 
-    }
-    // Função recursiva para definir a visibilidade de todos os VisualElements e seus filhos
-    void SetVisibilityRecursive(VisualElement element, bool isVisible)
-    {
-        element.visible = isVisible;
+        moreSpeedButton = root.Q<Button>("moreSpeedButton");
+        moreSpeedButton.clicked += () => MoreSpeed();
 
-        for (int i = 0; i < element.childCount; i++)
-        {
-            VisualElement childElement = element.ElementAt(i);
-            SetVisibilityRecursive(childElement, isVisible);
-        }
     }
+    
     void Update(){
-        if(Input.GetKeyDown(KeyCode.Tab)){
-            isUiVisible = !isUiVisible;
-            upgradeTab.visible = isUiVisible;
-            SetVisibilityRecursive(upgradeTab, isUiVisible);
-        }
-        // Pausa o jogo, falta coisas
+        
+        // Pausa o jogo, pausa incompleta
         if (Input.GetKeyDown(KeyCode.P)){
             if (isPaused)
             {
@@ -57,18 +46,16 @@ public class UIUpgrade : MonoBehaviour
         }
     }
     // SPEED
-    void Speed(){
-        projectileScript.IncreaseSpeed(10);
+    void MoreSpeed(){
+        projectileSO.speed += 10;
+        Debug.Log("More speed button pressed");
     }
     // FIRE RATE
     void LessFireRate(){
-        projectileScript.DecreaseFireRate(1);
     }
     void MoreFireRate(){
-        projectileScript.IncreaseFireRate(1);
     }
     // DAMAGE
     void Damage(){
-        projectileScript.IncreaseDamage(1);
     }
 }

@@ -1,8 +1,8 @@
-using System;
 using UnityEngine;
 public class ScoreManager : MonoBehaviour
 {
     public static ScoreManager Instance {get; private set;}
+    
     public static int metalScrap;
     private ScoreManager() { }
     private void Awake()

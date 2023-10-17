@@ -80,7 +80,7 @@ public class PlayerManager : MonoBehaviour
     }
     IEnumerator FireRate(Vector2 direction){
         FireProjectile(direction);
-        yield return new WaitForSeconds(projectilePrefab.GetComponent<Projectile>().fireRate);
+        yield return new WaitForSeconds(projectilePrefab.GetComponent<Projectile>().projectileSO.fireRate);
         shooted = false;
     }
     void FixedUpdate()

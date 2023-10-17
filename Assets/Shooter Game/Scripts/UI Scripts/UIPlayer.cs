@@ -1,19 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel.Design.Serialization;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class UIPlayer : MonoBehaviour
 {
     private GameObject player;
-    // Start is called before the first frame update
+    VisualElement root;
+    Label metalScrapDisplay;
     void Start()
     {
         player = PlayerManager.Instance.gameObject;
-    }
+        root = GetComponent<UIDocument>().rootVisualElement;
 
-    // Update is called once per frame
+        metalScrapDisplay = root.Q<Label>("metalScrapDisplay");
+    }
     void Update()
     {
-        
+        metalScrapDisplay.text = ScoreManager.metalScrap.ToString();
     }
 }

@@ -99,9 +99,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   direction: {x: 0, y: 0, z: 0}
-  speed: 100
-  damage: 1
-  fireRate: 0.1
+  projectileSO: {fileID: 11400000, guid: 01a16dc3a63caa048a21e4ee61d130ba, type: 2}
 --- !u!61 &3190815490334988102
 BoxCollider2D:
   m_ObjectHideFlags: 0
