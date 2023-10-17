@@ -13,12 +13,11 @@ public class EnemyManager : MonoBehaviour
     void Awake(){
         // OnEnemyDeath2 += PlayerManager.Instance.FireProjectile;
         OnEnemyDeath += ScoreManager.Instance.IncreaseScoreOnEnemyKill;   
-        OnEnemyDeath += ScoreManager.Instance.MyMethod;   
     }
     void Start()
     {
         sr = GetComponent<SpriteRenderer>();
-        player = PlayerManager.Instance.player;
+        player = PlayerManager.Instance.gameObject;
     }
     void Update()
     {

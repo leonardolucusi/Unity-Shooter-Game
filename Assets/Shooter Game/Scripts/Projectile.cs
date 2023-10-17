@@ -2,6 +2,7 @@ using System.Collections;
 using UnityEngine;
 public class Projectile : MonoBehaviour
 {
+    public static Projectile Instace { get; private set; }
     private GameObject player;
     public Vector3 direction;
     public float speed = 10f;
@@ -13,7 +14,7 @@ public class Projectile : MonoBehaviour
     void Start(){
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         gameObject.transform.rotation = Quaternion.Euler(0, 0, angle);
-        player = PlayerManager.Instance.player;
+        player = PlayerManager.Instance.gameObject;
     }
     void Update()
     {
@@ -23,13 +24,16 @@ public class Projectile : MonoBehaviour
     void OnTriggerEnter2D(Collider2D other){
         Destroy(gameObject);
     }
-    public void IncreaseProjectileFireRate(float increaseNumber){
+    public void DecreaseFireRate(float decreaseNumber){
+        fireRate -= decreaseNumber;
+    }
+    public void IncreaseFireRate(float increaseNumber){
         fireRate += increaseNumber;
     }
-    public void IncreaseProjectileSpeed(float increaseNumber){
+    public void IncreaseSpeed(float increaseNumber){
         speed += increaseNumber;
     }
-    public void IncreaseProjectileDamage(float increaseNumber){
+    public void IncreaseDamage(float increaseNumber){
         damage += increaseNumber;
     }
 

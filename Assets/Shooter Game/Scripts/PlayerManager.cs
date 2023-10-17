@@ -2,12 +2,8 @@ using System.Collections;
 using UnityEngine;
 public class PlayerManager : MonoBehaviour
 {
-    // SINGLETON
-    public static PlayerManager Instance{get; private set; }
-    // SINGLETON end
-    [SerializeField]
-    public GameObject player;
-    public GameObject projectilePrefab;
+    public static PlayerManager Instance{ get; private set; } // SINGLETON
+    [SerializeField] public GameObject projectilePrefab;
     private float moveHorizontal;
     private float moveVertical;
     public float  moveSpeed = 10f;
