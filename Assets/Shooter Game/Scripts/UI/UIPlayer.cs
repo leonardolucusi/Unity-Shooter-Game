@@ -7,6 +7,7 @@ using UnityEngine.UIElements;
 public class UIPlayer : MonoBehaviour
 {
     private GameObject player;
+    public CollectableSO collectableSO;
     VisualElement root;
     Label metalScrapDisplay;
     void Start()
@@ -18,6 +19,6 @@ public class UIPlayer : MonoBehaviour
     }
     void Update()
     {
-        metalScrapDisplay.text = ScoreManager.metalScrap.ToString();
+        metalScrapDisplay.text = collectableSO.metalScrap.ToString();
     }
 }

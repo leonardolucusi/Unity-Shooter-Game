@@ -48,7 +48,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hp: 3
+  collectableSO: {fileID: 11400000, guid: 5f8d5e56de7cd3d4c97f4adfd4576a71, type: 2}
   enemySO: {fileID: 11400000, guid: dbc93d32c25d37c40a568c9d0ab2fbbc, type: 2}
+  myRenderer: {fileID: 0}
 --- !u!61 &4277925468112695531
 BoxCollider2D:
   m_ObjectHideFlags: 0

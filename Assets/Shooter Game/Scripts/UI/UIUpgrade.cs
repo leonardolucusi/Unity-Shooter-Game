@@ -22,7 +22,6 @@ public class UIUpgrade : MonoBehaviour
     void Awake(){
         if(Instance == null){
             Instance = this;
-            DontDestroyOnLoad(Instance);
         }else Destroy(Instance);
     }
     void Start()
@@ -76,6 +75,6 @@ public class UIUpgrade : MonoBehaviour
         OnUpgradeIncrease?.Invoke(upgrade);
     }
     private void DecreaseUpgrade(UpgradeEnum downgrade){
-         OnUpgradeDecrease?.Invoke(downgrade);
+        OnUpgradeDecrease?.Invoke(downgrade);
     }    
 }

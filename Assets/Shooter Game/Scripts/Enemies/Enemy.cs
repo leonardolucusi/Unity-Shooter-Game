@@ -3,10 +3,10 @@ using System.Collections;
 using UnityEngine;
 public class Enemy : MonoBehaviour
 {
-    // public event Action<Vector2> OnEnemyDeath2;
     public event Action OnEnemyDeath;
     public float hp;
     private GameObject player;
+    public CollectableSO collectableSO;
     public EnemySO enemySO;
     [SerializeField]
     private SpriteRenderer myRenderer;
@@ -16,7 +16,9 @@ public class Enemy : MonoBehaviour
             hp = enemySO.hp;
         }
 
-        OnEnemyDeath += ScoreManager.Instance.IncreaseScoreOnEnemyKill;   
+        // OnEnemyDeath += ScoreManager.Instance.IncreaseScoreOnEnemyKill; 
+        OnEnemyDeath += collectableSO.IncreaseMetalScrap;
+               
     }
     void Start()
     {
@@ -43,7 +45,7 @@ public class Enemy : MonoBehaviour
     }
     public void CheckIfCanBeKilled(float hp){
         if(hp <= 0 ){
-            OnEnemyDeath?.Invoke(); // Invoke() - Invoca o método ou construtor atual.
+            OnEnemyDeath?.Invoke();
             Destroy(gameObject);
         }
     }
@@ -53,6 +55,7 @@ public class Enemy : MonoBehaviour
         myRenderer.color = Color.green;
     }
     private void OnDestroy(){
-        OnEnemyDeath -= ScoreManager.Instance.IncreaseScoreOnEnemyKill;
+        // OnEnemyDeath -= ScoreManager.Instance.IncreaseScoreOnEnemyKill;
+        OnEnemyDeath -= collectableSO.IncreaseMetalScrap;
     }
 }

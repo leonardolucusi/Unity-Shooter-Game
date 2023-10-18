@@ -3,7 +3,7 @@ public class ScoreManager : MonoBehaviour
 {
     public static ScoreManager Instance {get; private set;}
     
-    public static int metalScrap;
+    // public static int metalScrap;
     private ScoreManager() { }
     private void Awake()
     {
@@ -15,8 +15,6 @@ public class ScoreManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
-    public void IncreaseScoreOnEnemyKill(){
-        metalScrap += 1;
-    }
+  
 }
 
