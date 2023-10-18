@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 public class Projectile : MonoBehaviour
 {
@@ -6,6 +5,11 @@ public class Projectile : MonoBehaviour
     public Vector3 direction;
     public ProjectileSO projectileSO;
     void Awake(){
+        // Criar um novo SO e personalizar seus dados
+        // projectileSO = ScriptableObject.CreateInstance<ProjectileSO>();
+        // projectileSO.fireRate = 2f;
+        // projectileSO.speed = 10f;
+        // projectileSO.damage = 1f;
         Destroy(gameObject, 5f);
     }
     void Start(){
@@ -17,9 +21,6 @@ public class Projectile : MonoBehaviour
     {
         direction.z = 0f;
         transform.position += direction.normalized * projectileSO.speed * Time.deltaTime;
-        Debug.Log(projectileSO.speed);
-        Debug.Log(projectileSO.fireRate);
-        Debug.Log(projectileSO.damage);
     }
     void OnTriggerEnter2D(Collider2D other){
         Destroy(gameObject);

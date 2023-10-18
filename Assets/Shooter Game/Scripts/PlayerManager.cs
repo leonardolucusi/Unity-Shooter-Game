@@ -3,7 +3,8 @@ using UnityEngine;
 public class PlayerManager : MonoBehaviour
 {
     public static PlayerManager Instance{ get; private set; } // SINGLETON
-    [SerializeField] public GameObject projectilePrefab;
+    [SerializeField] private GameObject projectileObject;
+    private Projectile projectileInstance;
     private float moveHorizontal;
     private float moveVertical;
     public float  moveSpeed = 10f;
@@ -12,6 +13,7 @@ public class PlayerManager : MonoBehaviour
     private bool shooted = false;
     public float maxDistance;
     // public bool activateDebugDrawLine = true;
+    public Projectile GetCurrentProjectile { get { return projectileInstance;}}
     private void Awake()
     {
         if (Instance == null)
@@ -29,7 +31,8 @@ public class PlayerManager : MonoBehaviour
         rb2D = gameObject.GetComponent<Rigidbody2D>();
         lineRenderer = GetComponent<LineRenderer>();
         lineRenderer.positionCount = 2;
-        
+
+        projectileInstance = projectileObject.GetComponent<Projectile>();
     }
     void Update()
     {
@@ -80,7 +83,7 @@ public class PlayerManager : MonoBehaviour
     }
     IEnumerator FireRate(Vector2 direction){
         FireProjectile(direction);
-        yield return new WaitForSeconds(projectilePrefab.GetComponent<Projectile>().projectileSO.fireRate);
+        yield return new WaitForSeconds(projectileInstance.projectileSO.fireRate);
         shooted = false;
     }
     void FixedUpdate()
@@ -91,7 +94,7 @@ public class PlayerManager : MonoBehaviour
     }
     public void FireProjectile(Vector2 direction)
     {
-        GameObject projectile = Instantiate(projectilePrefab, transform.position, Quaternion.identity);
-        projectile.GetComponent<Projectile>().direction = direction;
+        GameObject projectileClone = Instantiate(projectileObject.gameObject, transform.position, Quaternion.identity);
+        projectileClone.GetComponent<Projectile>().direction = direction;
     }
 }

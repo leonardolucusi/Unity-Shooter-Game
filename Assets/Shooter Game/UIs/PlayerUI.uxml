@@ -3,7 +3,7 @@
         <ui:VisualElement style="flex-grow: 0;">
             <ui:ProgressBar value="50" title="Shield" name="energyShield" style="color: rgb(48, 110, 209); font-size: 20px; -unity-font-style: bold; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px; border-left-color: rgb(0, 0, 0); border-right-color: rgb(0, 0, 0); border-top-color: rgb(0, 0, 0); border-bottom-color: rgb(0, 0, 0); flex-grow: 0;" />
             <ui:VisualElement style="flex-grow: 1; flex-direction: row;">
-                <ui:Label tabindex="-1" text="Metal Scrap:" parse-escape-sequences="true" display-tooltip-when-elided="true" style="font-size: 30px;" />
+                <ui:Label tabindex="-1" text="Metal Scrap:" parse-escape-sequences="true" display-tooltip-when-elided="true" name="MetalScrapLabel" style="font-size: 30px;" />
                 <ui:Label tabindex="-1" text="text" parse-escape-sequences="true" display-tooltip-when-elided="true" name="metalScrapDisplay" style="flex-grow: 0; font-size: 30px;" />
             </ui:VisualElement>
         </ui:VisualElement>

@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d845856444c6c464e95614cf06bd9b00, type: 3}
   m_Name: ProjectileBasic
   m_EditorClassIdentifier: 
-  speed: 40
+  speed: 31
   damage: 1
   fireRate: 0.1
+  amount: 1
+  criticalShot: 1
   projectilePreFab: {fileID: 8882967157141531373, guid: 7fa471c571c6c664a95543bf2d10011c, type: 3}

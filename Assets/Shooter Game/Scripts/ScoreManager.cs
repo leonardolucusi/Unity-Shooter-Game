@@ -17,7 +17,6 @@ public class ScoreManager : MonoBehaviour
     }
     public void IncreaseScoreOnEnemyKill(){
         metalScrap += 1;
-        Debug.Log(metalScrap);
     }
 }
 
