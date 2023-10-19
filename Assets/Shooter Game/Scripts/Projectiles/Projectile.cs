@@ -3,7 +3,8 @@ public class Projectile : MonoBehaviour
 {
     public Vector3 direction;
     public ProjectileSO projectileSO;
-    void Awake(){
+    void Awake()
+    {
         // Criar um novo SO e personalizar seus dados
         // projectileSO = ScriptableObject.CreateInstance<ProjectileSO>();
         // projectileSO.fireRate = 2f;
@@ -11,7 +12,8 @@ public class Projectile : MonoBehaviour
         // projectileSO.damage = 1f;
         Destroy(gameObject, 5f);
     }
-    void Start(){
+    void Start()
+    {
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         gameObject.transform.rotation = Quaternion.Euler(0, 0, angle);
     }
@@ -20,7 +22,11 @@ public class Projectile : MonoBehaviour
         direction.z = 0f;
         transform.position += direction.normalized * projectileSO.speed * Time.deltaTime;
     }
-    void OnTriggerEnter2D(Collider2D other){
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.CompareTag("MetalChunk"))
+        {
+        }
         Destroy(gameObject);
     }
 }

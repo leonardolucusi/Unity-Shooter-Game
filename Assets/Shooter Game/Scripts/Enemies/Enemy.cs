@@ -10,15 +10,17 @@ public class Enemy : MonoBehaviour
     public EnemySO enemySO;
     [SerializeField]
     private SpriteRenderer myRenderer;
-    void Awake(){
-        if(enemySO == null){
+    void Awake()
+    {
+        if (enemySO == null)
+        {
             enemySO = ScriptableObject.CreateInstance<EnemySO>();
             hp = enemySO.hp;
         }
 
         // OnEnemyDeath += ScoreManager.Instance.IncreaseScoreOnEnemyKill; 
         OnEnemyDeath += collectableSO.IncreaseMetalScrap;
-               
+
     }
     void Start()
     {
@@ -33,29 +35,35 @@ public class Enemy : MonoBehaviour
         direction.Normalize();
         transform.position = Vector3.MoveTowards(transform.position, player.transform.position, enemySO.moveSpeed * Time.deltaTime);
     }
-    private void OnTriggerEnter2D(Collider2D other){
-        if(other.gameObject.CompareTag(TagUtils.TAG_PROJECTILE)){
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.CompareTag(TagUtils.TAG_PROJECTILE))
+        {
             StartCoroutine(ChangeColorOnHitDuration(enemySO.durationBetweenHitColorChange));
             ReceiveDamage(other.GetComponent<Projectile>().projectileSO.damage);
         }
     }
-    public void ReceiveDamage(float damage){
+    public void ReceiveDamage(float damage)
+    {
         hp -= damage;
         CheckIfCanBeKilled(hp);
     }
-    public void CheckIfCanBeKilled(float hp){
-        if(hp <= 0 ){
+    public void CheckIfCanBeKilled(float hp)
+    {
+        if (hp <= 0)
+        {
             OnEnemyDeath?.Invoke();
             Destroy(gameObject);
         }
     }
-    IEnumerator ChangeColorOnHitDuration(float duration){
+    IEnumerator ChangeColorOnHitDuration(float duration)
+    {
         myRenderer.color = Color.red;
         yield return new WaitForSeconds(duration);
         myRenderer.color = Color.green;
     }
-    private void OnDestroy(){
-        // OnEnemyDeath -= ScoreManager.Instance.IncreaseScoreOnEnemyKill;
+    private void OnDestroy()
+    {
         OnEnemyDeath -= collectableSO.IncreaseMetalScrap;
     }
 }

@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fdd497920432de24aaf3357bde363940, type: 3}
   m_Name: Collectables
   m_EditorClassIdentifier: 
-  metalScrap: 1
+  metalScrap: 10000
