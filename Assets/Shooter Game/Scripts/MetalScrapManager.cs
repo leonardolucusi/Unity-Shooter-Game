@@ -56,8 +56,8 @@ public class MetalScrapManager : MonoBehaviour
             if (collectableSO.metalScrap >= current_price_firerate)
             {
                 Debug.Log(current_price_firerate);
-                collectableSO.metalScrap -= current_price_firerate;
-                current_price_firerate += 1;
+                collectableSO.metalScrap = collectableSO.metalScrap - current_price_firerate;
+                current_price_firerate = current_price_firerate + 1;
             }
                 break;
             case UpgradeEnum.DAMAGE:
@@ -85,8 +85,7 @@ public class MetalScrapManager : MonoBehaviour
             {
                 Debug.Log(current_price_firerate);
                 collectableSO.metalScrap += current_price_firerate - 1; // Recupera parte do custo
-                current_price_firerate -= 1;
-                // Reverta a melhoria da taxa de tiro aqui
+                current_price_firerate -= 1; // Reverta a melhoria da taxa de tiro aqui
             }
                 break;
             case UpgradeEnum.DAMAGE:
