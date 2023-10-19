@@ -3,9 +3,6 @@ using UnityEngine;
 public class PerkManager : MonoBehaviour
 {
     public static PerkManager Instance { get; private set; }
-
-
-
     #region CONSTS
     public const float BASE_STAT_FIRERATE_TICK = 1.0f;
     public const float BASE_STAT_DAMAGE_TICK = 1.0f;

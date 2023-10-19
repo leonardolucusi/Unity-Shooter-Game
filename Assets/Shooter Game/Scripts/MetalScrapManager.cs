@@ -3,26 +3,28 @@ public class MetalScrapManager : MonoBehaviour
 {
     public static MetalScrapManager Instance { get; private set; }
     #region CONSTS
-    public const float BASE_PRICE_FIREATE = 50;
-    public const float BASE_PRICE_DAMAGE =  100f;
-    public const float BASE_PRICE_SPEED =  100f;
-    public const float BASE_PRICE_AMOUNT = 100f;
-    public const float BASE_PRICE_CRITICAL_SHOT = 100f;
-    public const float BASE_PRICE_ENERGY_SHIELD = 100f;
-    public const float BASE_PRICE_ENERGY_SHIELD_REGEN = 100f;
-    public const float BASE_PRICE_MOVESPEED = 100f;
-    public const float BASE_PRICE_TURBO = 100f;
+    public const float BASE_PRICE_FIREATE = 1;
+    public const float BASE_PRICE_DAMAGE =  1;
+    public const float BASE_PRICE_SPEED =  1;
+    public const float BASE_PRICE_AMOUNT = 1;
+    public const float BASE_PRICE_CRITICAL_SHOT = 1;
+    public const float BASE_PRICE_ENERGY_SHIELD = 1;
+    public const float BASE_PRICE_ENERGY_SHIELD_REGEN = 1;
+    public const float BASE_PRICE_MOVESPEED = 1;
+    public const float BASE_PRICE_TURBO = 1;
     // UPGRADE
-    public const float UPGRADE_PRICE_FIREATE = 100f;
-    public const float UPGRADE_PRICE_DAMAGE =  100f;
-    public const float UPGRADE_PRICE_SPEED =  100f;
-    public const float UPGRADE_PRICE_AMOUNT = 100f;
-    public const float UPGRADE_PRICE_CRITICAL_SHOT = 100f;
-    public const float UPGRADE_PRICE_ENERGY_SHIELD = 100f;
-    public const float UPGRADE_PRICE_ENERGY_SHIELD_REGEN = 100f;
-    public const float UPGRADE_PRICE_MOVESPEED = 100f;
-    public const float UPGRADE_PRICE_TURBO = 100f;
+    public const float UPGRADE_PRICE_FIRERATE = 100;
+    public const float UPGRADE_PRICE_DAMAGE =  1;
+    public const float UPGRADE_PRICE_SPEED =  1;
+    public const float UPGRADE_PRICE_AMOUNT = 1;
+    public const float UPGRADE_PRICE_CRITICAL_SHOT = 1;
+    public const float UPGRADE_PRICE_ENERGY_SHIELD = 1;
+    public const float UPGRADE_PRICE_ENERGY_SHIELD_REGEN = 1;
+    public const float UPGRADE_PRICE_MOVESPEED = 1;
+    public const float UPGRADE_PRICE_TURBO = 1;
     #endregion  
+
+
 
     private float current_price_firerate = BASE_PRICE_FIREATE;
     private float current_price_damage = BASE_PRICE_DAMAGE;
@@ -34,9 +36,6 @@ public class MetalScrapManager : MonoBehaviour
     private float current_price_movespeed = BASE_PRICE_MOVESPEED;
     private float current_price_turbo = BASE_PRICE_TURBO;
 
-
-
-
     public CollectableSO collectableSO;
     void Awake(){
         if(Instance == null){
@@ -47,32 +46,65 @@ public class MetalScrapManager : MonoBehaviour
     void Start()
     {
         UIUpgrade.Instance.OnUpgradeIncrease += BuyUpgrade;
+        UIUpgrade.Instance.OnUpgradeDecrease += SellUpgrade;
     }
-
+    // current_price_firerate = current_price_firerate + (current_price_firerate - 16f) * 1.5f;
     private void BuyUpgrade(UpgradeEnum upgradeEnum){
-        // Gastar meu Metal Scrap em troca do Upgrade Increase
         switch(upgradeEnum){
             case UpgradeEnum.FIRERATE:
-            Debug.Log("BuyUpgrade FIRERATE CALLED");
-            current_price_firerate = current_price_firerate + (current_price_firerate - 16f) * 1.5f; 
-            collectableSO.metalScrap -= current_price_firerate;
-            break;
+
+            if (collectableSO.metalScrap >= current_price_firerate)
+            {
+                Debug.Log(current_price_firerate);
+                collectableSO.metalScrap -= current_price_firerate;
+                current_price_firerate += 1;
+            }
+                break;
             case UpgradeEnum.DAMAGE:
-            break;
+                break;
             case UpgradeEnum.SPEED:
-            break;
+                break;
             case UpgradeEnum.AMOUNT:
-            break;
+                break;
             case UpgradeEnum.CRITICAL_SHOT:
-            break;
+                break;
             case UpgradeEnum.ENERGY_SHIELD:
-            break;
+                break;
             case UpgradeEnum.ENERGY_SHIELD_REGEN:
-            break;
+                break;
             case UpgradeEnum.MOVESPEED:
-            break;
+                break;
             case UpgradeEnum.TURBO:
-            break;
+                break;
+        }
+    }
+    private void SellUpgrade(UpgradeEnum upgradeEnum){
+        switch(upgradeEnum){
+            case UpgradeEnum.FIRERATE:
+            if (current_price_firerate > 1)
+            {
+                Debug.Log(current_price_firerate);
+                collectableSO.metalScrap += current_price_firerate - 1; // Recupera parte do custo
+                current_price_firerate -= 1;
+                // Reverta a melhoria da taxa de tiro aqui
+            }
+                break;
+            case UpgradeEnum.DAMAGE:
+                break;
+            case UpgradeEnum.SPEED:
+                break;
+            case UpgradeEnum.AMOUNT:
+                break;
+            case UpgradeEnum.CRITICAL_SHOT:
+                break;
+            case UpgradeEnum.ENERGY_SHIELD:
+                break;
+            case UpgradeEnum.ENERGY_SHIELD_REGEN:
+                break;
+            case UpgradeEnum.MOVESPEED:
+                break;
+            case UpgradeEnum.TURBO:
+                break;
         }
     }
 }
