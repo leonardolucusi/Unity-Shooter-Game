@@ -4,6 +4,8 @@ public class PerkManager : MonoBehaviour
 {
     public static PerkManager Instance { get; private set; }
 
+
+
     #region CONSTS
     public const float BASE_STAT_FIRERATE_TICK = 1.0f;
     public const float BASE_STAT_DAMAGE_TICK = 1.0f;
@@ -54,7 +56,7 @@ public class PerkManager : MonoBehaviour
         switch (upgrade)
         {
             case UpgradeEnum.FIRERATE:
-                current_stat_fireRate *= UPGRADE_STAT_FIRERATE_TICK;
+                current_stat_fireRate = UPGRADE_STAT_FIRERATE_TICK - 0.9f;
                 upgradeValue = current_stat_fireRate;
                 break;
             case UpgradeEnum.DAMAGE:
@@ -99,7 +101,7 @@ public class PerkManager : MonoBehaviour
         switch (upgrade)
         {
             case UpgradeEnum.FIRERATE:
-                current_stat_fireRate *= UPGRADE_STAT_FIRERATE_TICK;
+                current_stat_fireRate = UPGRADE_STAT_FIRERATE_TICK - 0.9f ;
                 upgradeValue = current_stat_fireRate;
                 break;
             case UpgradeEnum.DAMAGE:

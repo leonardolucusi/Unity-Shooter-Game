@@ -3,6 +3,9 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "newProjectile", menuName = "ScriptableObject/Projectiles")]
 public class ProjectileSO : ScriptableObject
 {
+    #region CONST_MAX_VALUES
+    float FIRERATE_MAX = 0.1f;
+    #endregion
     public float speed;
     public float damage;
     public float fireRate;
@@ -14,7 +17,7 @@ public class ProjectileSO : ScriptableObject
             switch (upgrade)
             {
                 case UpgradeEnum.FIRERATE:
-                    fireRate += Convert.ToSingle(value);
+                    fireRate -= Convert.ToSingle(value);
                     // metalScrap decrease
                     break;
 
@@ -41,7 +44,7 @@ public class ProjectileSO : ScriptableObject
             switch (upgrade)
             {
                 case UpgradeEnum.FIRERATE: 
-                    fireRate -= Convert.ToSingle(value);
+                    fireRate += Convert.ToSingle(value);
                     // metalScrap increase
                     break;
 
@@ -62,5 +65,12 @@ public class ProjectileSO : ScriptableObject
                     break;
             }
         }
+    }
+    public void InitalProjectileData(){
+        speed = 10;
+        damage = 1;
+        fireRate = 1.1f;
+        amount = 1;
+        criticalShot = 1 / 100;
     }
 }

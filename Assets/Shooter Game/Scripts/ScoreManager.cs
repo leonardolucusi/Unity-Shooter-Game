@@ -2,19 +2,15 @@ using UnityEngine;
 public class ScoreManager : MonoBehaviour
 {
     public static ScoreManager Instance {get; private set;}
-    
-    // public static int metalScrap;
     private ScoreManager() { }
     private void Awake()
     {
         if (Instance == null){
             Instance = this;
-            DontDestroyOnLoad(gameObject);
+            DontDestroyOnLoad(Instance);
         }
-        else{
-            Destroy(gameObject);
-        }
+        else Destroy(Instance);
+        
     }
-  
 }
 

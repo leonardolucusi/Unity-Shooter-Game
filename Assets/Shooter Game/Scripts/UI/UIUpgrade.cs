@@ -22,6 +22,8 @@ public class UIUpgrade : MonoBehaviour
     void Awake(){
         if(Instance == null){
             Instance = this;
+    DontDestroyOnLoad(Instance);
+
         }else Destroy(Instance);
     }
     void Start()
@@ -57,7 +59,10 @@ public class UIUpgrade : MonoBehaviour
         lessCriticalShotButton.clicked += () => DecreaseUpgrade(UpgradeEnum.CRITICAL_SHOT);
     }
     void Update(){
-        // Pausa o jogo, pausa incompleta
+        // Pausa o jogo, pausa parcial
+        // TO FIX
+        // Disparos pelo jogador ainda podem ser feitos
+        // Rotacao do player ainda continua a seguir o mouse
         if (Input.GetKeyDown(KeyCode.P)){
             if (isPaused)
             {
@@ -71,6 +76,7 @@ public class UIUpgrade : MonoBehaviour
             }
         }
     }
+  
     private void IncreaseUpgrade(UpgradeEnum upgrade){
         OnUpgradeIncrease?.Invoke(upgrade);
     }
