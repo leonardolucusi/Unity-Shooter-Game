@@ -3,7 +3,7 @@ public class MetalScrapManager : MonoBehaviour
 {
     public static MetalScrapManager Instance { get; private set; }
     #region CONSTS
-    public const float BASE_PRICE_FIREATE = 1;
+    public const float BASE_PRICE_FIREATE = 2;
     public const float BASE_PRICE_DAMAGE =  1;
     public const float BASE_PRICE_SPEED =  1;
     public const float BASE_PRICE_AMOUNT = 1;
@@ -13,7 +13,7 @@ public class MetalScrapManager : MonoBehaviour
     public const float BASE_PRICE_MOVESPEED = 1;
     public const float BASE_PRICE_TURBO = 1;
     // UPGRADE
-    public const float UPGRADE_PRICE_FIRERATE = 100;
+    public const float UPGRADE_PRICE_FIRERATE = 1;
     public const float UPGRADE_PRICE_DAMAGE =  1;
     public const float UPGRADE_PRICE_SPEED =  1;
     public const float UPGRADE_PRICE_AMOUNT = 1;
@@ -27,6 +27,7 @@ public class MetalScrapManager : MonoBehaviour
 
 
     private float current_price_firerate = BASE_PRICE_FIREATE;
+    
     private float current_price_damage = BASE_PRICE_DAMAGE;
     private float current_price_speed = BASE_PRICE_SPEED;
     private float current_price_amount = BASE_PRICE_AMOUNT;
@@ -35,7 +36,10 @@ public class MetalScrapManager : MonoBehaviour
     private float current_price_energy_shield_regen = BASE_PRICE_ENERGY_SHIELD_REGEN;
     private float current_price_movespeed = BASE_PRICE_MOVESPEED;
     private float current_price_turbo = BASE_PRICE_TURBO;
+    
+    PerkManager perkManager;
 
+    
     public CollectableSO collectableSO;
     void Awake(){
         if(Instance == null){
@@ -45,20 +49,18 @@ public class MetalScrapManager : MonoBehaviour
     }
     void Start()
     {
+        perkManager = PerkManager.Instance;
         UIUpgrade.Instance.OnUpgradeIncrease += BuyUpgrade;
         UIUpgrade.Instance.OnUpgradeDecrease += SellUpgrade;
+        
     }
-    // current_price_firerate = current_price_firerate + (current_price_firerate - 16f) * 1.5f;
     private void BuyUpgrade(UpgradeEnum upgradeEnum){
         switch(upgradeEnum){
             case UpgradeEnum.FIRERATE:
-
-            if (collectableSO.metalScrap >= current_price_firerate)
-            {
-                Debug.Log(current_price_firerate);
-                collectableSO.metalScrap = collectableSO.metalScrap - current_price_firerate;
-                current_price_firerate = current_price_firerate + 1;
-            }
+                if (collectableSO.metalScrap >= current_price_firerate && perkManager.firerate_level < TagUtils.MAX_FIREATE_LEVEL){                
+                    collectableSO.metalScrap = collectableSO.metalScrap - current_price_firerate;
+                    current_price_firerate = current_price_firerate * 2f;
+                }
                 break;
             case UpgradeEnum.DAMAGE:
                 break;
@@ -78,14 +80,14 @@ public class MetalScrapManager : MonoBehaviour
                 break;
         }
     }
+
     private void SellUpgrade(UpgradeEnum upgradeEnum){
         switch(upgradeEnum){
             case UpgradeEnum.FIRERATE:
-            if (current_price_firerate > 1)
+            if (perkManager.firerate_level > TagUtils.MIN_LEVEL && perkManager.firerate_level <= TagUtils.MAX_FIREATE_LEVEL)
             {
-                Debug.Log(current_price_firerate);
-                collectableSO.metalScrap += current_price_firerate - 1; // Recupera parte do custo
-                current_price_firerate -= 1; // Reverta a melhoria da taxa de tiro aqui
+                current_price_firerate = current_price_firerate * 0.5f;
+                collectableSO.metalScrap += current_price_firerate;
             }
                 break;
             case UpgradeEnum.DAMAGE:

@@ -4,7 +4,6 @@ using UnityEngine;
 public class ProjectileSO : ScriptableObject
 {
     #region CONST_MAX_VALUES
-    float FIRERATE_MAX = 0.1f;
     #endregion
     public float speed;
     public float damage;
@@ -12,8 +11,10 @@ public class ProjectileSO : ScriptableObject
     public float amount;
     public float criticalShot;
     public GameObject projectilePreFab;
-    public void IncreaseStatus<T>(UpgradeEnum upgrade, T value){
-        if(value is IConvertible){
+    public void IncreaseStatus<T>(UpgradeEnum upgrade, T value)
+    {
+        if (value is IConvertible)
+        {
             switch (upgrade)
             {
                 case UpgradeEnum.FIRERATE:
@@ -21,29 +22,31 @@ public class ProjectileSO : ScriptableObject
                     // metalScrap decrease
                     break;
 
-                case UpgradeEnum.DAMAGE: 
+                case UpgradeEnum.DAMAGE:
                     damage += Convert.ToSingle(value);
                     break;
 
-                case UpgradeEnum.SPEED: 
+                case UpgradeEnum.SPEED:
                     speed += Convert.ToSingle(value);
                     break;
 
-                case UpgradeEnum.AMOUNT: 
+                case UpgradeEnum.AMOUNT:
                     amount += Convert.ToSingle(value);
                     break;
 
-                case UpgradeEnum.CRITICAL_SHOT: 
+                case UpgradeEnum.CRITICAL_SHOT:
                     criticalShot += Convert.ToSingle(value);
                     break;
             }
         }
     }
-     public void DecreaseStatus<T>(UpgradeEnum upgrade, T value){
-        if(value is IConvertible){
+    public void DecreaseStatus<T>(UpgradeEnum upgrade, T value)
+    {
+        if (value is IConvertible)
+        {
             switch (upgrade)
             {
-                case UpgradeEnum.FIRERATE: 
+                case UpgradeEnum.FIRERATE:
                     fireRate += Convert.ToSingle(value);
                     // metalScrap increase
                     break;
@@ -66,7 +69,8 @@ public class ProjectileSO : ScriptableObject
             }
         }
     }
-    public void InitalProjectileData(){
+    public void InitalProjectileData()
+    {
         speed = 10;
         damage = 1;
         fireRate = 1.1f;

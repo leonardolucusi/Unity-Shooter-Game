@@ -19,20 +19,22 @@ public class UIUpgrade : MonoBehaviour
     Button lessAmountButton;
     Button moreCriticalShotButton;
     Button lessCriticalShotButton;
-    void Awake(){
-        if(Instance == null){
+    void Awake()
+    {
+        if (Instance == null)
+        {
             Instance = this;
-    DontDestroyOnLoad(Instance);
-
-        }else Destroy(Instance);
+            DontDestroyOnLoad(Instance);
+        }
+        else Destroy(Instance);
     }
     void Start()
     {
         root = GetComponent<UIDocument>().rootVisualElement;
-        
+
         upgradeTab = root.Q<VisualElement>("upgradeTab");
         upgradeTab.visible = true;
-        
+
         moreFireRateButton = root.Q<Button>("moreFireRateButton");
         lessFireRateButton = root.Q<Button>("lessFireRateButton");
         moreFireRateButton.clicked += () => IncreaseUpgrade(UpgradeEnum.FIRERATE);
@@ -58,12 +60,14 @@ public class UIUpgrade : MonoBehaviour
         moreCriticalShotButton.clicked += () => IncreaseUpgrade(UpgradeEnum.CRITICAL_SHOT);
         lessCriticalShotButton.clicked += () => DecreaseUpgrade(UpgradeEnum.CRITICAL_SHOT);
     }
-    void Update(){
+    void Update()
+    {
         // Pausa o jogo, pausa parcial
         // TO FIX
         // Disparos pelo jogador ainda podem ser feitos
         // Rotacao do player ainda continua a seguir o mouse
-        if (Input.GetKeyDown(KeyCode.P)){
+        if (Input.GetKeyDown(KeyCode.P))
+        {
             if (isPaused)
             {
                 Time.timeScale = 1f;
@@ -76,11 +80,13 @@ public class UIUpgrade : MonoBehaviour
             }
         }
     }
-  
-    private void IncreaseUpgrade(UpgradeEnum upgrade){
+
+    private void IncreaseUpgrade(UpgradeEnum upgrade)
+    {
         OnUpgradeIncrease?.Invoke(upgrade);
     }
-    private void DecreaseUpgrade(UpgradeEnum downgrade){
+    private void DecreaseUpgrade(UpgradeEnum downgrade)
+    {
         OnUpgradeDecrease?.Invoke(downgrade);
-    }    
+    }
 }

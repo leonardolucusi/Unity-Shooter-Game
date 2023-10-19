@@ -9,6 +9,6 @@ public class InitialDataProjectileSO : MonoBehaviour
 
     void Update()
     {
-        
+
     }
 }

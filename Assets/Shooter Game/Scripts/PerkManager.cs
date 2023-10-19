@@ -24,8 +24,6 @@ public class PerkManager : MonoBehaviour
     public const float UPGRADE_STAT_CRITICAL_SHOT_TICK = 1.0f;
     #endregion
 
-
-
     private float current_stat_fireRate = BASE_STAT_FIRERATE_TICK;
     private float current_stat_damage = BASE_STAT_DAMAGE_TICK;
     private float current_stat_speed = BASE_STAT_SPEED_TICK;
@@ -36,6 +34,7 @@ public class PerkManager : MonoBehaviour
     private float current_stat_turbo = BASE_STAT_TURBO_TICK;
     private float current_stat_critical_shot = BASE_STAT_CRITICAL_SHOT_TICK;
 
+    public int firerate_level = 0;
     void Awake(){
         if(Instance == null){
             Instance = this;
@@ -43,18 +42,20 @@ public class PerkManager : MonoBehaviour
         }else Destroy(Instance);
     }
     void Start(){
-        UIUpgrade.Instance.OnUpgradeIncrease += UpgradeIncrease;
-        UIUpgrade.Instance.OnUpgradeDecrease += UpgradeDecrease;
+        UIUpgrade.Instance.OnUpgradeIncrease += UpgradePerk;
+        UIUpgrade.Instance.OnUpgradeDecrease += DowngradePerk;
     }
 
-    private void UpgradeIncrease(UpgradeEnum upgrade)
+    private void UpgradePerk(UpgradeEnum upgrade)
     {
         float upgradeValue = 0;
-        switch (upgrade)
-        {
+        switch (upgrade){
             case UpgradeEnum.FIRERATE:
+            if(firerate_level < TagUtils.MAX_FIREATE_LEVEL){
+                firerate_level++;
                 current_stat_fireRate = UPGRADE_STAT_FIRERATE_TICK - 0.9f;
                 upgradeValue = current_stat_fireRate;
+            }
                 break;
             case UpgradeEnum.DAMAGE:
                 current_stat_damage *= UPGRADE_STAT_DAMAGE_TICK;
@@ -91,15 +92,17 @@ public class PerkManager : MonoBehaviour
         }
         OnUpgradeUpdatePlayerProjectile(upgrade, upgradeValue);
     }
-
-    private void UpgradeDecrease(UpgradeEnum upgrade)
+    private void DowngradePerk(UpgradeEnum upgrade)
     {
         float upgradeValue = 0;
         switch (upgrade)
         {
             case UpgradeEnum.FIRERATE:
-                current_stat_fireRate = UPGRADE_STAT_FIRERATE_TICK - 0.9f ;
-                upgradeValue = current_stat_fireRate;
+                if(firerate_level > TagUtils.MIN_LEVEL && firerate_level <= TagUtils.MAX_FIREATE_LEVEL){
+                    current_stat_fireRate = UPGRADE_STAT_FIRERATE_TICK - 0.9f ;
+                    upgradeValue = current_stat_fireRate;
+                    firerate_level--;
+                }
                 break;
             case UpgradeEnum.DAMAGE:
                 current_stat_damage *= UPGRADE_STAT_DAMAGE_TICK;
