@@ -1,5 +1,4 @@
 using System;
-using Unity.VisualScripting;
 using UnityEngine;
 public class MetalChunk : MonoBehaviour
 {
@@ -26,7 +25,7 @@ public class MetalChunk : MonoBehaviour
         if (hp <= 0)
         {
             OnMetalChunkInactive?.Invoke(metalScrapDrop);
-            TimerMetalChunk.Instance.TriggerTimerToReSpawn(gameObject);
+            MetalChunkReSpawnTimer.Instance.TriggerTimerToReSpawn(gameObject);
         }
     }
 }

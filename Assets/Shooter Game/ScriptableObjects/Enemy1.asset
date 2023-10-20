@@ -16,3 +16,4 @@ MonoBehaviour:
   hp: 5
   durationBetweenHitColorChange: 0.2
   sprite: {fileID: 21300000, guid: 0066d469cbdb12541b115589928e8084, type: 3}
+  respawnCooldown: 1

@@ -6,4 +6,5 @@ public class EnemySO : ScriptableObject
     public float hp;
     public float durationBetweenHitColorChange;
     public Sprite sprite;
+    public float respawnCooldown;
 }
