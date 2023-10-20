@@ -1,12 +1,17 @@
+using System;
+using Unity.VisualScripting;
 using UnityEngine;
-
 public class MetalChunk : MonoBehaviour
 {
+    public event Action<int> OnMetalChunkInactive;
+    public CollectableSO collectableSO;
     public float hp;
+    public int metalScrapDrop = 10;
     void Start()
     {
-
+        OnMetalChunkInactive += collectableSO.IncreaseMetalScrap;
     }
+
     void OnTriggerEnter2D(Collider2D other)
     {
         if (other.gameObject.CompareTag(TagUtils.TAG_PROJECTILE))
@@ -14,20 +19,14 @@ public class MetalChunk : MonoBehaviour
             Projectile projectile = other.gameObject.GetComponent<Projectile>();
             hp -= projectile.projectileSO.damage;
             CheckHp(hp);
-            Debug.Log(hp);
         }
     }
-
     void CheckHp(float hp)
     {
         if (hp <= 0)
         {
-            DestroyMe();
+            OnMetalChunkInactive?.Invoke(metalScrapDrop);
+            TimerMetalChunk.Instance.TriggerTimerToReSpawn(gameObject);
         }
-    }
-
-    void DestroyMe()
-    {
-        Destroy(gameObject);
     }
 }

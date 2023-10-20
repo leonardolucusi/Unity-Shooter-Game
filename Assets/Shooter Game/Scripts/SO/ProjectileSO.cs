@@ -73,8 +73,8 @@ public class ProjectileSO : ScriptableObject
     {
         speed = 10;
         damage = 1;
-        fireRate = 1.1f;
+        fireRate = 0.1f;
         amount = 1;
-        criticalShot = 1 / 100;
+        criticalShot = 100 * 0.01f;
     }
 }

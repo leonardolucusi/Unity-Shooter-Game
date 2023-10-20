@@ -4,9 +4,9 @@ public class CollectableSO : ScriptableObject
 {
     public float metalScrap;
 
-    public void IncreaseMetalScrap()
+    public void IncreaseMetalScrap(int num)
     {
-        metalScrap += 1;
+        metalScrap += num;
     }
 }
 

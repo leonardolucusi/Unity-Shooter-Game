@@ -3,13 +3,13 @@ using System.Collections;
 using UnityEngine;
 public class Enemy : MonoBehaviour
 {
-    public event Action OnEnemyDeath;
+    public event Action<int> OnEnemyDeath;
     public float hp;
     private GameObject player;
     public CollectableSO collectableSO;
     public EnemySO enemySO;
-    [SerializeField]
-    private SpriteRenderer myRenderer;
+    [SerializeField] private SpriteRenderer myRenderer;
+    public int metalScrapDrop = 1;
     void Awake()
     {
         if (enemySO == null)
@@ -52,7 +52,7 @@ public class Enemy : MonoBehaviour
     {
         if (hp <= 0)
         {
-            OnEnemyDeath?.Invoke();
+            OnEnemyDeath?.Invoke(metalScrapDrop);
             Destroy(gameObject);
         }
     }
