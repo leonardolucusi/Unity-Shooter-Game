@@ -29,7 +29,6 @@ public class UIUpgrade : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(Instance);
         }
         else Destroy(Instance);
     }

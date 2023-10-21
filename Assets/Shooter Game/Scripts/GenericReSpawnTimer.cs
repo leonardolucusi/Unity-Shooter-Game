@@ -4,7 +4,6 @@ using UnityEngine;
 public class GenericReSpawnTimer : MonoBehaviour
 {
     public static GenericReSpawnTimer Instance { get; private set; }
-
     void Awake()
     {
         if (Instance == null)
@@ -15,27 +14,34 @@ public class GenericReSpawnTimer : MonoBehaviour
         else Destroy(gameObject);
     }
 
-    public void CallChangeColorOnHitDuration(GameObject enemy, float duration)
+    public void CallChangeColorOnHitDuration(SpriteRenderer enemyRenderer, float duration)
     {
-        StartCoroutine(ChangeColorOnHitDuration(enemy, duration));
-    }
-    IEnumerator ChangeColorOnHitDuration(GameObject enemy, float duration)
-    {
-        enemy.GetComponent<SpriteRenderer>().color = Color.red;
-        yield return new WaitForSeconds(duration);
-        enemy.GetComponent<SpriteRenderer>().color = Color.green;
+        StartCoroutine(ChangeColorOnHitDuration(enemyRenderer, duration));
     }
 
-    public void RespawnEnemy(GameObject obj, float duration)
+    IEnumerator ChangeColorOnHitDuration(SpriteRenderer enemyRenderer, float duration)
     {
-        StartCoroutine(EnemyTimer(obj, duration));
+        enemyRenderer.color = Color.red;
+        yield return new WaitForSeconds(duration);
+        if (enemyRenderer != null) enemyRenderer.color = Color.green;
     }
 
-    public IEnumerator EnemyTimer(GameObject obj, float duration)
+    public void RespawnEnemy(GameObject instance, float duration)
     {
-        obj.SetActive(false);
-        yield return new WaitForSeconds(duration);
-        obj.SetActive(true);
-        obj.GetComponent<Enemy>().hp = 10;
+        StartCoroutine(Timer(instance, duration));
+    }
+
+    public IEnumerator Timer(GameObject instance, float duration)
+    {
+        if (instance.CompareTag(TagUtils.TAG_ENEMY))
+        {
+            yield return new WaitForSeconds(duration);
+            if (instance != null) instance.SetActive(true);
+        }
+        else if (instance.CompareTag(TagUtils.TAG_METALCHUNK))
+        {
+            yield return new WaitForSeconds(duration);
+            instance.SetActive(true);
+        }
     }
 }

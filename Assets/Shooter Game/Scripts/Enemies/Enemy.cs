@@ -4,26 +4,26 @@ public class Enemy : MonoBehaviour
 {
     public event Action<int> RewardPlayerOnEnemyInactive;
     public event Action<GameObject, float> RespawnEnemyOnEnemyInactive;
-    public event Action<GameObject> SetEnemyPositionOnEnemyInactive;
-    public float hp;
+    [SerializeField] private float _hp;
     private GameObject player;
     public CollectableSO collectableSO;
     public EnemySO enemySO;
     [SerializeField] private SpriteRenderer myRenderer;
-    public int metalScrapDrop = 1;
+    public int metalScrapDrop;
+    public float EnemyHp { get { return _hp; } set { _hp = value; } }
     void Awake()
     {
         if (enemySO == null)
         {
             enemySO = ScriptableObject.CreateInstance<EnemySO>();
-            hp = enemySO.hp;
+            _hp = enemySO.hp;
         }
+        else _hp = enemySO.hp;
     }
 
     void Start()
     {
         RewardPlayerOnEnemyInactive += collectableSO.IncreaseMetalScrap;
-        SetEnemyPositionOnEnemyInactive += GameObjectsSpawnerPosition.Instance.EnemyReSpawnPosition;
         RespawnEnemyOnEnemyInactive += GenericReSpawnTimer.Instance.RespawnEnemy;
 
         myRenderer = gameObject.AddComponent<SpriteRenderer>();
@@ -43,24 +43,28 @@ public class Enemy : MonoBehaviour
     {
         if (other.gameObject.CompareTag(TagUtils.TAG_PROJECTILE))
         {
-            GenericReSpawnTimer.Instance.CallChangeColorOnHitDuration(gameObject, enemySO.durationBetweenHitColorChange);
+            GenericReSpawnTimer.Instance.CallChangeColorOnHitDuration(myRenderer, enemySO.durationBetweenHitColorChange);
             ReceiveDamage(other.GetComponent<Projectile>().projectileSO.damage);
         }
     }
 
     public void ReceiveDamage(float damage)
     {
-        hp -= damage;
-        CheckIfCanBeKilled(hp);
+        _hp -= damage;
+        CheckIfCanBeKilled(_hp);
     }
 
     public void CheckIfCanBeKilled(float hp)
     {
         if (hp <= 0)
         {
+
             RespawnEnemyOnEnemyInactive?.Invoke(gameObject, enemySO.respawnCooldown);
             RewardPlayerOnEnemyInactive?.Invoke(metalScrapDrop);
-            SetEnemyPositionOnEnemyInactive?.Invoke(gameObject);
+            gameObject.transform.position = Utils.RandomPositionVector2();
+            _hp = 10;
+            gameObject.SetActive(false);
+
         }
     }
 }

@@ -4,9 +4,11 @@ using UnityEngine;
 public class ObjectPool : MonoBehaviour
 {
     public static ObjectPool Instance;
+
     public List<GameObject> pooledObjects;
     public GameObject metalChunk;
     public GameObject enemy;
+    public GameObject enemy2;
     public int enemyAmount;
     public int metalChunkAmount;
     [HideInInspector] public int amountToPool;
@@ -19,33 +21,51 @@ public class ObjectPool : MonoBehaviour
         }
         else Destroy(gameObject);
     }
-    void OnEnable()
+
+    void Start()
     {
-        pooledObjects = new List<GameObject>();
+        pooledObjects = new List<GameObject>(enemyAmount + metalChunkAmount);
         GameObject tmp;
-        for (int i = 0; i < metalChunkAmount; i++)
-        {
-            tmp = Instantiate(metalChunk);
-            tmp.SetActive(false);
-            pooledObjects.Add(tmp);
-        }
-        for (int i = 0; i < enemyAmount; i++)
+        // for (ushort i = 0; i < metalChunkAmount; i++)
+        // {
+        //     tmp = Instantiate(metalChunk);
+        //     tmp.SetActive(false);
+        //     pooledObjects.Add(tmp);
+        // }
+        for (ushort i = 0; i < enemyAmount; i++)
         {
             tmp = Instantiate(enemy);
             tmp.SetActive(false);
             pooledObjects.Add(tmp);
         }
         amountToPool = enemyAmount + metalChunkAmount;
-    }
-    public GameObject GetPooledObject()
-    {
-        for (int i = 0; i < amountToPool; i++)
+
+        for (ushort i = 0; i < amountToPool; i++)
         {
             if (!pooledObjects[i].activeInHierarchy)
             {
-                return pooledObjects[i];
+                if (pooledObjects[i] != null)
+                {
+                    pooledObjects[i].transform.SetPositionAndRotation(Utils.RandomPositionVector2(), Quaternion.identity);
+                    pooledObjects[i].SetActive(true);
+                }
             }
         }
-        return null;
+    }
+
+    public void OnZoneChanged()
+    {
+        float rng = Random.Range(0.0f, 100.0f);
+        if (rng < ZoneManager.ZONE2_THRESHOLD) return;
+
+        for (ushort i = 0; i < amountToPool; i++)
+        {
+            if (!pooledObjects[i].activeInHierarchy)
+            {
+                Destroy(pooledObjects[i]);
+                pooledObjects[i] = Instantiate(enemy2);
+                Debug.Log("Enemy changed");
+            }
+        }
     }
 }

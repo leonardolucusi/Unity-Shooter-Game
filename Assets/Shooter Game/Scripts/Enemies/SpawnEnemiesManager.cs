@@ -4,8 +4,6 @@ public class SpawnEnemiesManager : MonoBehaviour
 {
     public GameObject enemy;
     public GameObject player;
-    void Start()
-    { }
     void Update()
     {
         if (Input.GetKeyUp(KeyCode.R))

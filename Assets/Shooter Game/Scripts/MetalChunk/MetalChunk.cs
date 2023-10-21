@@ -2,30 +2,38 @@ using System;
 using UnityEngine;
 public class MetalChunk : MonoBehaviour
 {
-    public event Action<int> OnMetalChunkInactive;
+    public event Action<int> RewardPlayerOnMetalChunkInactive;
+    public event Action<GameObject, float> RespawnMetalChunkOnMetalChunkInactive;
     public CollectableSO collectableSO;
-    public float hp;
+    [SerializeField] private float _hp;
     public int metalScrapDrop = 10;
+    public float duration;
     void Start()
     {
-        OnMetalChunkInactive += collectableSO.IncreaseMetalScrap;
+        RewardPlayerOnMetalChunkInactive += collectableSO.IncreaseMetalScrap;
+        RespawnMetalChunkOnMetalChunkInactive += GenericReSpawnTimer.Instance.RespawnEnemy;
+
     }
 
     void OnTriggerEnter2D(Collider2D other)
     {
         if (other.gameObject.CompareTag(TagUtils.TAG_PROJECTILE))
         {
-            Projectile projectile = other.gameObject.GetComponent<Projectile>();
-            hp -= projectile.projectileSO.damage;
-            CheckHp(hp);
+            _hp -= PlayerManager.Instance.GetCurrentProjectile.projectileSO.damage;
+            CheckHp(_hp);
         }
     }
     void CheckHp(float hp)
     {
         if (hp <= 0)
         {
-            OnMetalChunkInactive?.Invoke(metalScrapDrop);
-            MetalChunkReSpawnTimer.Instance.TriggerTimerToReSpawn(gameObject);
+
+            RewardPlayerOnMetalChunkInactive?.Invoke(metalScrapDrop);
+            RespawnMetalChunkOnMetalChunkInactive?.Invoke(gameObject, duration);
+            gameObject.transform.position = Utils.RandomPositionVector2();
+
+            _hp = 10;
+            gameObject.SetActive(false);
         }
     }
 }
